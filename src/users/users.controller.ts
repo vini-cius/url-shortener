@@ -1,18 +1,32 @@
-import { Body, Controller, HttpException, Post } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { CreateUser } from './entities/create-user.entity';
-import { CreateUserDto } from './dto/create-user.dto';
-import { hash } from 'bcryptjs';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpException,
+  HttpStatus,
+  Post,
+} from '@nestjs/common'
+import {
+  ApiBadRequestResponse,
+  ApiInternalServerErrorResponse,
+  ApiOperation,
+  ApiResponse,
+} from '@nestjs/swagger'
 
+import { CreateUserDto } from './dto/create-user.dto'
+import { CreateUser } from './entities/create-user.entity'
+import { UsersService } from './users.service'
+
+@ApiBadRequestResponse({ description: 'Bad request' })
+@ApiInternalServerErrorResponse({ description: 'Internal server error' })
 @Controller('users')
 export class UsersController {
-  constructor(private usersService: UsersService) { }
+  constructor(private usersService: UsersService) {}
 
+  @HttpCode(HttpStatus.CREATED)
   @Post()
   @ApiOperation({ summary: 'Create user' })
   @ApiResponse({ status: 201, type: CreateUser })
-  @ApiResponse({ status: 400 })
   async create(@Body() user: CreateUserDto) {
     const { email, name, password } = user
 
@@ -22,9 +36,7 @@ export class UsersController {
       throw new HttpException('User already exists', 400)
     }
 
-    const passwordHash = await hash(password, 6)
-
-    await this.usersService.create({ email, name, password: passwordHash })
+    await this.usersService.create({ email, name, password })
 
     return {
       message: 'User created',
