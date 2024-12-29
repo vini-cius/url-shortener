@@ -30,4 +30,18 @@ export class AuthService {
 
     return { token }
   }
+
+  async getUserFromToken(token: string) {
+    try {
+      const payload = await this.jwtService.verifyAsync(token, {
+        secret: process.env.APP_SECRET,
+      })
+
+      const user = await this.usersService.findOneByEmail(payload.email)
+
+      return user
+    } catch {
+      throw new UnauthorizedException()
+    }
+  }
 }

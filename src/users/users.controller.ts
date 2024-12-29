@@ -19,7 +19,7 @@ import { UsersService } from './users.service'
 
 @ApiBadRequestResponse({ description: 'Bad request' })
 @ApiInternalServerErrorResponse({ description: 'Internal server error' })
-@Controller('users')
+@Controller('api/users')
 export class UsersController {
   constructor(private usersService: UsersService) {}
 

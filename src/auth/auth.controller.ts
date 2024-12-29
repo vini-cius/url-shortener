@@ -13,7 +13,7 @@ import { SignIn } from './entities/sign-in.entity'
 
 @ApiBadRequestResponse({ description: 'Bad request' })
 @ApiInternalServerErrorResponse({ description: 'Internal server error' })
-@Controller('auth')
+@Controller('api/auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
