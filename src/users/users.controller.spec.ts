@@ -19,4 +19,22 @@ describe('UsersController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined()
   })
+
+  describe('create', () => {
+    it('should create user', async () => {
+      const result = {
+        message: 'User created',
+      }
+
+      jest.spyOn(controller, 'create').mockImplementation(async () => result)
+
+      expect(
+        await controller.create({
+          email: 'test@test.com',
+          name: 'test',
+          password: 'test',
+        })
+      ).toBe(result)
+    })
+  })
 })

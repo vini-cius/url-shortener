@@ -16,4 +16,12 @@ describe('PrismaService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined()
   })
+
+  describe('onModuleInit', () => {
+    it('should connect', async () => {
+      jest.spyOn(service, '$connect').mockImplementation()
+
+      expect(await service.onModuleInit()).toBeUndefined()
+    })
+  })
 })

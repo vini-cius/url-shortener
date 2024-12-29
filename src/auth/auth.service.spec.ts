@@ -19,4 +19,16 @@ describe('AuthService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined()
   })
+
+  describe('signIn', () => {
+    it('should return access token', async () => {
+      const result = {
+        token: 'token',
+      }
+
+      jest.spyOn(service, 'signIn').mockImplementation(async () => result)
+
+      expect(await service.signIn('test@test.com', 'password')).toBe(result)
+    })
+  })
 })

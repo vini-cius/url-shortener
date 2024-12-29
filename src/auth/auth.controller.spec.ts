@@ -21,4 +21,21 @@ describe('AuthController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined()
   })
+
+  describe('signIn', () => {
+    it('should return access token', async () => {
+      const result = {
+        token: 'token',
+      }
+
+      jest.spyOn(controller, 'signIn').mockImplementation(async () => result)
+
+      expect(
+        await controller.signIn({
+          email: 'test@test.com',
+          password: 'password',
+        })
+      ).toBe(result)
+    })
+  })
 })
