@@ -65,7 +65,7 @@ export class LinksService {
         originalUrl: true,
         createdAt: true,
       },
-      where: { userId },
+      where: { userId, deletedAt: null },
     })
 
     const linksWithMetrics = await Promise.all(
@@ -82,5 +82,20 @@ export class LinksService {
     return {
       links: linksWithMetrics,
     }
+  }
+
+  async deleteLink(id: string, userId: string) {
+    const linkExists = await this.prisma.shortLink.findUnique({
+      where: { id, userId },
+    })
+
+    if (!linkExists) {
+      throw new BadRequestException('Link not found')
+    }
+
+    await this.prisma.shortLink.update({
+      where: { id, userId },
+      data: { deletedAt: new Date() },
+    })
   }
 }

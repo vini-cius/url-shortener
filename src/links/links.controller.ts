@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Headers,
   HttpCode,
@@ -54,7 +55,7 @@ export class LinksController {
 
   @HttpCode(HttpStatus.OK)
   @Get('api/links')
-  @ApiOperation({ summary: 'Get links' })
+  @ApiOperation({ summary: 'Get user links' })
   @ApiResponse({ status: HttpStatus.OK, type: GetLinks })
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
@@ -62,5 +63,17 @@ export class LinksController {
     const { user } = req
 
     return this.linksService.getLinks(user.sub)
+  }
+
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Delete('api/links/:id')
+  @ApiOperation({ summary: 'Delete link' })
+  @ApiResponse({ status: HttpStatus.NO_CONTENT })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
+  async deleteLink(@Req() req: Request, @Param('id') id: string) {
+    const { user } = req
+
+    return this.linksService.deleteLink(id, user.sub)
   }
 }
