@@ -8,6 +8,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Put,
   Req,
   Res,
   UseGuards,
@@ -72,8 +73,28 @@ export class LinksController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
   async deleteLink(@Req() req: Request, @Param('id') id: string) {
-    const { user } = req
+    const {
+      user: { sub: userId },
+    } = req
 
-    return this.linksService.deleteLink(id, user.sub)
+    return this.linksService.deleteLink(id, userId)
+  }
+
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Put('api/links/:id')
+  @ApiOperation({ summary: 'Update link' })
+  @ApiResponse({ status: HttpStatus.NO_CONTENT })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
+  async updateLink(
+    @Req() req: Request,
+    @Param('id') id: string,
+    @Body() { url }: CreateLinkDto
+  ) {
+    const {
+      user: { sub: userId },
+    } = req
+
+    return this.linksService.updateLink(id, userId, url)
   }
 }

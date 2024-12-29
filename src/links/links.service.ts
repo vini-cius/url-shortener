@@ -64,6 +64,7 @@ export class LinksService {
         code: true,
         originalUrl: true,
         createdAt: true,
+        updatedAt: true,
       },
       where: { userId, deletedAt: null },
     })
@@ -96,6 +97,23 @@ export class LinksService {
     await this.prisma.shortLink.update({
       where: { id, userId },
       data: { deletedAt: new Date() },
+    })
+  }
+
+  async updateLink(id: string, userId: string, newUrl: string) {
+    const linkExists = await this.prisma.shortLink.findUnique({
+      where: { id, userId, deletedAt: null },
+    })
+
+    if (!linkExists) {
+      throw new BadRequestException('Link not found')
+    }
+
+    await this.prisma.shortLink.update({
+      where: { id, userId, deletedAt: null },
+      data: {
+        originalUrl: newUrl,
+      },
     })
   }
 }
