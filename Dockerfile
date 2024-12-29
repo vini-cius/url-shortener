@@ -1,20 +1,35 @@
-FROM node:22.12.0-slim
+FROM node:22 as builder
 
-USER node
-
+# Install pnpm
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 
-WORKDIR /home/node/app
+WORKDIR /usr/src/app
 
 COPY package*.json ./
-COPY ./prisma prisma
+COPY pnpm-lock.yaml ./
+COPY prisma ./prisma/
 
-RUN pnpm install
+RUN pnpm i
 
 COPY . .
 
-RUN npx prisma generate
+RUN pnpm run build
 
-CMD [ "pnpm", "start" ]
+FROM node:22
+
+# Install pnpm
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+
+COPY --from=builder /usr/src/app/node_modules ./node_modules
+COPY --from=builder /usr/src/app/package*.json ./
+COPY --from=builder /usr/src/app/dist ./dist
+
+COPY --from=builder /usr/src/app/prisma ./prisma
+
+EXPOSE 3000
+
+CMD ["pnpm", "run", "start:migrate:prod"]

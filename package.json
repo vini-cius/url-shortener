@@ -11,6 +11,8 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
+    "start:migrate:prod": "npx prisma migrate deploy && pnpm run start:prod",
+    "postinstall": "prisma generate",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -19,12 +21,13 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "prepare": "husky",
     "commit": "cz",
-    "db:migrate": "pnpm prisma migrate dev",
-    "db:studio": "pnpm prisma studio"
+    "prisma:generate": "npx prisma generate",
+    "prisma:migrate": "npx prisma migrate dev",
+    "prisma:studio": "npx prisma studio"
   },
   "engines": {
     "npm": ">=8.0.0",
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   },
   "dependencies": {
     "@liaoliaots/nestjs-redis": "^10.0.0",
@@ -66,6 +69,7 @@
     "husky": "^9.1.7",
     "jest": "^29.7.0",
     "prettier": "^3.2.5",
+    "prisma": "^6.1.0",
     "source-map-support": "^0.5.21",
     "supertest": "^6.3.4",
     "ts-jest": "^29.1.2",
@@ -96,5 +100,8 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "prisma": {
+    "schema": "./prisma/schema.prisma"
   }
 }
