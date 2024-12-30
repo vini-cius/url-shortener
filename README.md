@@ -12,7 +12,7 @@ Uma API para encurtar URLs transforma links longos em versões curtas e fáceis 
 - **Redis**  
 - **Prisma ORM**  
 - **ZOD** para validação de schema
-- Documentção com **Swagger**
+- Documentação com **Swagger**
 - Padronização de commits com **commitlint**, **commitizen** e **husky** para execução de *git hooks*
 - **Sentry** (opcional, para monitoramento de erros)
 
@@ -79,7 +79,7 @@ $ pnpm run test
 
 ## Habilitando o Sentry para monitoramento de erros
 
-### Ative atraves da variavel de ambiente SENTRY_ENABLED (.env)
+### Ative através da variável de ambiente `SENTRY_ENABLED` (.env)
 
 `
 SENTRY_ENABLED=true
