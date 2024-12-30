@@ -19,7 +19,7 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post()
-  @ApiOperation({ summary: 'Create user' })
+  @ApiOperation({ summary: 'User authentication' })
   @ApiResponse({ status: 201, type: SignIn })
   @ApiUnauthorizedResponse({
     schema: { example: { message: 'Invalid credentials' } },

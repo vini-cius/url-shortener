@@ -16,6 +16,7 @@ import {
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
+  ApiHeader,
   ApiInternalServerErrorResponse,
   ApiOperation,
   ApiResponse,
@@ -38,10 +39,14 @@ export class LinksController {
   @Post('api/links')
   @ApiOperation({ summary: 'Create link' })
   @ApiResponse({ status: HttpStatus.CREATED, type: CreateLink })
-  @ApiBearerAuth()
+  @ApiHeader({
+    name: 'authorization',
+    required: false,
+    description: 'Bearer token',
+  })
   async create(
     @Body() { url }: CreateLinkDto,
-    @Headers('authorization') token: string | undefined
+    @Headers('authorization') token?: string
   ) {
     return this.linksService.create(url, token)
   }
