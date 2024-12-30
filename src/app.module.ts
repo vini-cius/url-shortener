@@ -1,7 +1,8 @@
 import { RedisModule } from '@liaoliaots/nestjs-redis'
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
-import { APP_PIPE } from '@nestjs/core'
+import { APP_FILTER, APP_PIPE } from '@nestjs/core'
+import { SentryGlobalFilter, SentryModule } from '@sentry/nestjs/setup'
 import { ZodValidationPipe } from 'nestjs-zod'
 
 import { AuthModule } from './auth/auth.module'
@@ -11,6 +12,7 @@ import { UsersModule } from './users/users.module'
 
 @Module({
   imports: [
+    SentryModule.forRoot(),
     ConfigModule.forRoot(),
     RedisModule.forRoot({
       config: {
@@ -29,6 +31,10 @@ import { UsersModule } from './users/users.module'
     {
       provide: APP_PIPE,
       useClass: ZodValidationPipe,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: SentryGlobalFilter,
     },
   ],
 })

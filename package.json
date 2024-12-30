@@ -5,7 +5,7 @@
   "description": "NestJS URL Shortener API",
   "license": "MIT",
   "scripts": {
-    "build": "nest build",
+    "build": "nest build && pnpm sentry:sourcemaps",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -23,7 +23,8 @@
     "commit": "cz",
     "prisma:generate": "npx prisma generate",
     "prisma:migrate": "npx prisma migrate dev",
-    "prisma:studio": "npx prisma studio"
+    "prisma:studio": "npx prisma studio",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject ./dist && sentry-cli sourcemaps upload ./dist"
   },
   "engines": {
     "npm": ">=8.0.0",
@@ -38,6 +39,9 @@
     "@nestjs/platform-express": "^10.4.4",
     "@nestjs/swagger": "^8.1.0",
     "@prisma/client": "^6.1.0",
+    "@sentry/cli": "^2.39.1",
+    "@sentry/nestjs": "^8.47.0",
+    "@sentry/profiling-node": "^8.47.0",
     "bcryptjs": "^2.4.3",
     "ioredis": "^5.4.2",
     "nestjs-zod": "^4.2.0",

@@ -1,11 +1,19 @@
 import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
+import * as Sentry from '@sentry/nestjs'
+import { nodeProfilingIntegration } from '@sentry/profiling-node'
 import { patchNestJsSwagger } from 'nestjs-zod'
 
 import { AppModule } from './app.module'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
+
+  if (process.env.SENTRY_ENABLED === 'true') {
+    Sentry.init({
+      integrations: [Sentry.nestIntegration(), nodeProfilingIntegration()],
+    })
+  }
 
   app.enableCors()
 
