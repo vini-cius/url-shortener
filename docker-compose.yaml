@@ -22,7 +22,11 @@ services:
       - redisdata:/var/lib/redis/data
 
   app:
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - SENTRY_ENABLED=${SENTRY_ENABLED}
     ports:
       - '3000:3000'
     volumes:

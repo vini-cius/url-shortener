@@ -17,6 +17,14 @@ COPY . .
 
 RUN pnpm run build
 
+ARG SENTRY_ENABLED
+
+ENV SENTRY_ENABLED=${SENTRY_ENABLED}
+
+RUN echo $SENTRY_ENABLED
+
+RUN if [ "$SENTRY_ENABLED" = "true" ]; then pnpm run sentry:sourcemaps; fi
+
 FROM node:22
 
 # Install pnpm
